@@ -1,0 +1,87 @@
+                ================================
+                = RELEASE NOTES OF BHWIDE 1.07 =
+                ================================
+		
+--------------------------
+What's NEW in VERSION 1.07
+--------------------------
+
+* A new version of hadronic vacuuum polarization added - option: KeyPol = 4.
+  Routines of F. Jegerlehner, 21.10.2025; see bhw/repi.f: chadr5x25().
+* A new function for leptonic vacuum polarization; see bhw/repi.f: REPILE(S).
+* SM parameters (masses, widths, constants) updated according to PDG 2025.
+
+--------------------------
+What's NEW in VERSION 1.06
+--------------------------
+
+* Obsolete Fortran instructions and statements replaced with the ones accepted
+  by newer gfortran compilers, in particular GNU Fortran 13.2.0.
+* Modifications in Makefiles and their structure: multiple Makefile.templ
+  in subdirectories replaced with a single Makefile.inc in the main directory.
+* Updated EW parameters (masses, widths, constants) according to PDG 2024.
+  
+--------------------------
+What's NEW in VERSION 1.05
+--------------------------
+
+* A weight corresponding to pure QED corrections is calculated also for 
+  KeyEWC = 1 with KeyLib = 2. This speeds up considerably computation of
+  pure weak corrections, which can be taken as a difference between the
+  EWC weight and the QED weight, see README for details.
+
+--------------------------
+What's NEW in VERSION 1.04
+--------------------------
+
+* The bug in the routine IMZ2 of ALIBABA's EWC library causing a crash
+  of the program above the tt~ threshold has been fixed.
+  Now BHWIDE can be run safely for CMS energies above the tt~ threshold.
+
+--------------------------
+What's NEW in VERSION 1.03
+--------------------------
+
+* The bug in the routine FILBHW that did not allow for low cuts 
+  on the final electron energy (below ~0.3GeV for LEP energies) 
+  has been fixed (thanks to Martin Gruenewald). 
+  NOTE: It did not affect the physical results for the allowed cuts.
+
+--------------------------
+What's NEW in VERSION 1.02
+--------------------------
+
+* The following parameters: 
+    WTMAX  - Maximum Weight for rejection
+    AMAZ   - Z mass 
+    GAMMZ  - Z width
+    SINW2  - sin^2(theta_W)
+    AMTOP  - top quark mass 
+    AMHIG  - Higgs     mass
+  are now added to the INPUT parameters (no more hidden in the code);
+  see description of INPUT for details.
+* A possibility of switching-off Z-contribution added with the help
+  of a key: KeyZof =0/1 (Z-contr. ON/OFF) - for tests only!
+* One can choose pure t or pure s channel contributions with the help
+  of a switch: KeyCha =0/1/2 (s+t/s/t contributions) - for tests only!
+* Compiler flags can be easily updated in all subdirectories with the help
+  of Makefile in the main directory - see README.
+* Programming bugs/exceptions that caused problems on some computers
+  have been fixed. 
+
+--------------------------
+What's NEW in VERSION 1.01
+--------------------------
+
+* Added the new option: "QED corrections + vacuum polarization" 
+                        (KeyEWC=0, KeyPia=1,2,3; see the program). 
+  This may be useful for lower energies where the Z contribution
+  and the weak corrections are small (it increases an efficiency
+  of MC generation considerably). For this option both the BABAMC
+  and ALIBABA virtual corrections libraries should be equivalent.
+* Real part of the photon vacuum polarization in ALIBABA routines
+  replaced by more recent calculations (with 3 options: KeyPia=1,2,3).
+
+
+
+

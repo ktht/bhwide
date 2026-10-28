@@ -1,0 +1,317 @@
+==============================================================================
+------------------------------------------------------------------------------
+                        README of BHWIDE version 1.07
+------------------------------------------------------------------------------
+==============================================================================
+
+BHWIDE: 
+    A Monte Carlo Event Generator for Bhabha Scattering
+    at Large (Wide) Angles with O(alpha) EW YFS Exponentiation. 
+
+Writtten by: 
+   S. Jadach, W. Placzek and B.F.L. Ward
+
+--------------
+Documentation:
+--------------
+
+There is still no COMPLETE UP-TO-DATE documentation, sorry!
+See comments in the source code, for example in: 
+   bhwide-1.07-export/bhw/bhwide.f, bhwid1.f, model1.f, model2.f
+
+Long write-up:
+++++++++++++++ 
+
+* S. Jadach, W. Placzek and B.F.L. Ward, in preparation. 
+
+Other related papers:
++++++++++++++++++++++
+
+1. S. Jadach, W. Placzek and B.F.L. Ward 
+   Phys. Lett. B390 (1997) 298; UTHEP-95-1001;
+   e-Print Archive: hep-ph/9608412.
+2. S. Jadach et al.,"Event Generators for Bhabha Scattering",
+   in "Physics ai LEP2", eds. G. Altarelli, T. Sjostrand, F. Zwirner,
+   (CERN, Geneva, 1996), Yellow Report CERN 96-01, Vol. 2, p. 229; 
+   e-Print Archive: hep-ph/9602393.   
+3. W. Placzek et al., "Precision Calculation of Bhabha Scattering at LEP",
+   talk presented at the IVth International Symposium on 
+   Radiative Corrections (RADCOR~98), Barcelona, Spain, Sept. 8-12, 1998,  
+   Conference Proceedings, ed. by J.~Sola, World Scientific, 
+   Singapore, 1999, page 325;
+   CERN preprint CERN-TH/99-07, January 1999;
+   e-Print Archive: hep-ph/9903381.
+4. M. Kobel et al.,"Two-Fermion Production in Electron-Positron Collisions",
+   in "Reports of the Working Groups on Precision Calculations for LEP2 
+   Physics", eds. S. Jadach, G. Passarino and R. Pittau,
+   (CERN, Geneva, 2000), Yellow Report CERN 2000-009, p. 269; 
+   e-Print Archive: hep-ph/0007180.
+5. S. Actis et al., "Quest for precision in hadronic cross sections at low 
+   energy: Monte Carlo tools vs. experimental data", 
+   Eur. Phys. J. C66 (2010) 585; arXiv: 0912.0749 [hep-ph]. 
+
+-------------
+Availability:
+-------------
+
+WWW:
+https://placzek.web.cern.ch/bhwide/
+
+-----------------------------------
+How to START your work with BHWIDE:
+-----------------------------------
+
+After unpacking the distribution directory with
+     > tar xvzf bhwide-1.07-export.tar.gz
+you should inspect Makefile.inc in the main directory to check whether
+the compiler name, flags, etc. are set according to your system configuration.
+If not, re-set them appropriately in this file.
+
+Now you can execute a demonstration program: 
+     > cd bhwide-1.07-export
+     > make demo 
+The program should run immediately and produce the output file: 
+   bhwide-1.07-export/demo/demo.output 
+and some plots (LaTeX format) in: 
+   bhwide-1.07-export/demo/demo.tex  
+If you have LaTeX (pdflatex) and a PDF viewer gv then the plots should
+pop-up on your screen!
+In this case you are executing the main program:
+   bhwide-1.07-export/demo/demo.f
+See routine BHWdem there. It is an instructive example on how to
+set up input parameters and run BHWIDE with variable/constant weights. 
+Then you can compare your results with the pre-prepared output from
+the run on Linux Ubuntu-24.04 with the gfortran compiler:
+GNU Fortran (GCC) 13.2.0 (Ubuntu 13.2.0-23ubuntu4)
+located in the files:
+   bhwide-1.07-export/demo/demo_100k.output   <-- text-file output
+   bhwide-1.07-export/demo/demo_100k.pdf      <-- plots in PDF format
+
+------------------------------------
+Main features of BHWIDE version 1.07
+------------------------------------
+
+* Multiple photons with FINITE transverse momenta generated according to the 
+  YFS Monte Carlo technique,
+* Full O(alpha) matrix element,        
+* Two options for electroweak radiative corrections (virtual+soft) library:
+  (1) from BABAMC  (obsolete!),
+  (2) from ALIBABA (recommended for this version!),
+* Two options for hard bremsstrahlung matrix element:
+  (1) as MODEL1, in terms of helicity amplitudes obtained by the authors,
+  (2) as MODEL2, from CALKUL Nucl. Phys. B206 (1982) 61,
+  (both checked to be in a very good agreement),
+* Dyson resummed photon and Z-boson propagators.
+* Z-contribution can be switched-off - for tests only!
+* Pure t or s channel contributions can be chosen - for tests only! 
+
+---------------------
+Topography of BHWIDE:
+---------------------
+
+bhlwide-1.07-export/demo/       Working directory with demo
+bhlwide-1.07-export/bhw/        Monte Carlo event generator
+bhlwide-1.07-export/lib/        Tools for Monte Carlo and for histogramming
+bhlwide-1.07-export/interface/  Interfaces to ElectroWeak Libraries   
+bhlwide-1.07-export/ewc/        Directory with ElectroWeak Libraries          
+bhlwide-1.07-export/dok/        Documentation in PostScript
+
+-----------------------
+Input/Output of BHWIDE:
+-----------------------
+
+!----------------------------------------------------------------------!
+!                 INPUT and OUTPUT of BHWIDE                           !
+!----------------------------------------------------------------------!
+! All input and output goes through parameters in                      !
+!                 CALL BHWIDE(MODE,XPAR,NPAR)                          !
+! and through /MOMSET/ and /WGTALL/ common blocks.                     !
+! In the following we shall  briefly indicate the meaning of the       !
+! above parameters/variables.                                          !
+!                                                                      !
+! IF( MODE =-1 ) THEN                                                  !
+! ===================                                                  !
+! Initialization is performed, all input parameters are transfered     !
+! through XPAR and NPAR.                                               !
+! In the following table we indicate the meaning of NPAR, XPAR.        !
+!                                                                      !
+!      Table,           Input parameters of BHWIDE                     !
+!----------------------------------------------------------------------! 
+!  Entry    Variable   Meaning                                         !
+!----------------------------------------------------------------------!
+!  NPAR( 1)  KeyOpt = 1000*KeyZof +100*KeyCha +10*KeyWgt +KeyRnd       !
+!                    General option switch:                            !
+!            KeyZof - Z-contribution switch-off:                       !
+!                   =0 Z-ON (DEFAULT)                                  !
+!                   =1 Z-OFF (for tests!)                              !
+!            KeyCha - channel choice:                                  !
+!                   =0 both s and t-channels + interferences (DEFAULT) !
+!                   =1 s-channel only (for tests!), with KeyMod=2      !
+!                   =2 t-channel only (for tests!), with KeyMod=2      !
+!            KeyWgt - switch for constant, variable weight WTMOD:      !
+!                   =0 WTMOD=1 useful for apparatus Monte Carlo,       !
+!                      To make it more efficient the user may need     !
+!                      to adjust a value of WTMAX in routine BHWID1    !
+!                   =1 WTMOD varying, faster/safer, RECOMMENDED        !
+!            KeyRnd =1,2 type of random number generator RANMAR,RANECU !
+!  NPAR( 2) =KeyRad =1000*KeyEWC +100*KeyLib +10*KeyMod +KeyPia        !
+!                    is option switch for ElectroWeak Radiative Corr.  !
+!            KeyEWC - switching ON/OFF weak corrections:               !
+!                   =0 only QED corrections included                   !
+!                      (here both KeyLib =1,2 should be equivalent)    !
+!                   =1 all ElectroWeak Corrections included            !
+!            KeyLib - option for ElectroWeak Corrections Library:      !
+!                   =1 ElectroWeak Corr. from BABAMC (obsolete)        !
+!                   =2 ElectroWeak Corr. from ALIBABA, RECOMMENDED     !   
+!            KeyMod - type of MODEL subprogram and QED matrix element  !
+!                     for hard bremsstrahlung:                         !
+!                   =1 obtained by the authors (helicity amplitudes)   !
+!                   =2 from CALKUL, Nucl. Phys. B206 (1982) 61.        ! 
+!                      Checked to be in a very good agreement!         !
+!            KeyPia - photon vacuum polarization switch:               ! 
+!                   =0 OFF,                                            !
+!                   =1 ON, Burkhardt et.al. 1989, as in BHLUMI 2.0x    !
+!                   =2 ON, S. Eidelman, F. Jegerlehner, Z.Phys.C(1995) !
+!                   =3 ON, Burkhardt and Pietrzyk 1995 (Moriond).      !
+!                   =4 ON, F. Jegerlehner, 21 October 2025.            !
+!                   NOTE: Now it works for both ALIBABA and BABAMC     !
+!                         rutines as well as for KeyEWC=0!             !
+!  XPAR( 1) =CMSENE Total center mass energy [GeV]                     !
+!  XPAR( 2) =THMINP Minimum scattering angle [deg] for positron        !
+!  XPAR( 3) =THMAXP Maximum scattering angle [deg] for positron        !
+!  XPAR( 4) =THMINE Minimum scattering angle [deg] for electron        !
+!  XPAR( 5) =THMAXE Maximum scattering angle [deg] for electron        !
+!  XPAR( 6) =ENMINP Minimum energy [GeV] for final state positron      ! 
+!  XPAR( 7) =ENMINE Minimum energy [GeV] for final state electron      !
+!  XPAR( 8) =ACOLLI Maximum acollinearity [deg] of final state e+e-    !
+!  XPAR( 9) =EPSCMS Dimensionless infrared cut on CMS energy of soft   !
+!                   photons, ( E_phot > CMSENE*EPSCMS/2 )              !
+!  XPAR(10) =WTMAX  Maximum Weight for rejection (if <= 0, it is reset !
+!                   inside the program)                                !    
+!  >>> IMPOTRANT NOTE: In the case of generating UNWEIGHTED events,    !
+!      the user should check in the OUTPUT if the number of            !
+!      OVERWEIGHTED events and/or the fraction of the corresponding    !
+!      cross section is ACCEPTABLE for his/her desired PRECISION.      !
+!      If not, the value of WTMAX has to be adjusted (increased)       !
+!      accordingly (making a histogram of the weight might be helpful).!    
+!  XPAR(11) =AMAZ   Z mass  [GeV]                                      !
+!  XPAR(12) =GAMMZ  Z width [GeV]  (may be recalculated by EW library) !
+!  XPAR(13) =SINW2  sin^2(theta_W) (may be recalculated by EW library) !
+!  XPAR(14) =AMTOP  top quark mass  [GeV]                              !
+!  XPAR(15) =AMHIG  Higgs     mass  [GeV]                              !
+! Note: All the above angular limits are given with respect to the     !
+!       corresponding incoming particle (positron or electron, resp.). !   
+!                                                                      !
+! Some other parameters (like other fermion masses, alpha_s) are       !
+! set up in the EW libraries (alibaba.f, babamc.f).                    !
+! Note: In some cases the user may also need to adjust transfer limits !
+!       (trmin and/or trmid) in routine FILBHW.                        ! 
+!----------------------------------------------------------------------! 
+!                                                                      !
+! ELSE IF( MODE = 0 ) THEN                                             !
+! ========================                                             !
+! Generation of the single Monte Carlo event.                          !
+! The four momenta of the final state electron, positron and photon    !
+! and of real photons are encoded in                                   !
+!      COMMON / MOMSET / P1(4),Q1(4),P2(4),Q2(4),PHOT(100,4),NPHOT     !
+! where P1 and Q1 are four-momenta of positron and elecron beams.      !
+! P2 and Q2 are four-momenta of outgoing positron and electron.        !
+! The list PHOT(100,4) four-momenta contains                           !
+! NPHOT four-momenta of real the photons, all in GeV.                  !
+! NOTE: +z axis points along incoming e+.                              !
+!                                                                      !
+! The principal weight WTMOD of the event is placed in:                !
+!      COMMON / WGTALL / WTMOD,WTCRUD,WTTRIG,WTSET(300)                !
+! It is often of interest to use "paralel weights" from WTSET.         !
+! The event weight is constructed then as WT= WTCRUD*WTTRIG*WTSET(J).  !
+! Which J is alowed and what version of the QED matrix element         !
+! it represents is summarized in the table below.                      !
+! (Note that using "parallel weights" makes only sense for calculation !
+! with variable weights, KEYWGT=1.)                                    !
+! WTTRIG is a "trigger" weight (0 or 1) calculated in routine trigMC   ! 
+! (see below) for acceptances defined by the input parameters. It is   !
+! evaluated before the model weights WTSET(J) are calculated           !
+! (the latter is done only for WTTRIG=1 which increases the efficiency ! 
+! of the program).                                                     !
+! To avoid unnecessary crashes of the program while using the parallel !
+! weights the kinematical calculations should be protected by an       !
+! appriopriate conditional statement:                                  !
+! IF (WTCRUD*WTTRIG.NE.0D0) THEN ... ENDIF                             !
+!                                                                      !
+!              Table of WTSETS entries for BHWID1                      !
+!----------------------------------------------------------------------!
+!  Entry      Type of QED calculation in MODEL1                        !
+!----------------------------------------------------------------------!
+!  WTSET(10)    O(alpha^0)exp (YFS exponentiated)                      !
+!  WTSET(11)    O(alhpa^1)exp (YFS exponentiated)                      !
+!  WTSET(20)    O(alpha^0)    (non-exponentiated)                      !
+!  WTSET(21)    O(alhpa^1)    (non-exponentiated)                      ! 
+!  -> Extra weight for KeyEWC=1 and KeyLib=2:                          !
+!  WTSET(31)    O(alhpa^1)exp_QED (YFS exp. pure QED corrections)      !
+!----------------------------------------------------------------------!
+! Principal weight from MODEL1 (used to calculate WTMOD) is WTSET( 1). !
+! The best and default set-up for MODEL1 is:                           !
+!              WTSET( 1) = WTSET(11)                                   !
+!----------------------------------------------------------------------!
+!  Entry      Type of QED calculation in MODEL2                        !
+!----------------------------------------------------------------------!
+!  WTSET(110)    O(alpha^0)exp (YFS exponentiated)                     !
+!  WTSET(111)    O(alhpa^1)exp (YFS exponentiated)                     !
+!  WTSET(120)    O(alpha^0)    (non-exponentiated)                     !
+!  WTSET(121)    O(alhpa^1)    (non-exponentiated)                     ! 
+!  -> Extra weight for KeyEWC=1 and KeyLib=2:                          !
+!  WTSET(131)    O(alhpa^1)exp_QED (YFS exp. pure QED corrections)     !
+!----------------------------------------------------------------------!
+! Principal weight from MODEL2 (used to calculate WTMOD) is WTSET(101).!
+! The best and default set-up for MODEL2 is:                           !
+!              WTSET(101) = WTSET(111)                                 !
+!                                                                      !
+! ELSE IF( MODE = 1 ) THEN                                             !
+! ========================                                             !
+! The total cross section corresponding to generated series of event,  !
+! i.e. resulting from MC integrartion is calculated and stored in XPAR !
+! and NPAR, see table below.                                           !
+!----------------------------------------------------------------------! 
+!  Entry    Variable   Meaning                                         !
+!----------------------------------------------------------------------! 
+!  NPAR(10)  NEVGEN  Number of generated MC events                     !
+!  NPAR(20)  IEVENT  Number of generated MC events                     !
+!  XPAR(10)   XMCPB  Total x-section [pb]                              !
+!  XPAR(11)    EREL  The relative error of XPAR(10)                    !
+!  XPAR(12)     XMC  Total x-section [GEV**-2]                         !
+!  XPAR(20)  SIG0PB  Crude total MC x-section [pb] which is necessary  !
+!                    for rescaling histograms in run with              !
+!                    weighted events.                                  !
+!  XPAR(21)          =0, error of XPAR(20) is zero                     !
+!  XPAR(20)    SIG0  Crude x-section as XPAR(20) but in [GeV**(-2)]    !
+!----------------------------------------------------------------------!
+! For constant weight option KEYWGT=0 (convevience in rescaling histos)!
+! we put XPAR(20,21,22)=XPAR(10,11,12)                                 !   
+! For MODE=1 program is called upon many times in the process of       !
+! rescaling histograms, therefore, there is no output printed          !
+! in this mode.                                                        !
+!                                                                      !
+! ELSE IF( MODE = 2 ) THEN                                             !
+! ========================                                             !
+! Only in this MODE=2 in addition to filling XPAR and NPAR as for      !
+! MODE=1 the values of various x-sections are printed on standard      !
+! output file.                                                         !
+!                                                                      !
+! ENDIF                                                                !
+! ====                                                                 !
+!----------------------------------------------------------------------!
+
+----------------
+Acknowledgements
+----------------
+
+We thank Norman Graf, Martin Gruenewald and Helmut Marsiske for comments,
+particularly for finding programming bugs/exceptions causing problems on 
+some platforms.
+
+
+   Good luck!
+   
+             Authors of BHWIDE
+
+PS. Questions/comments to: wieslaw.placzek@uj.edu.pl  (Wieslaw Placzek)
