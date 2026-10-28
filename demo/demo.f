@@ -25,13 +25,89 @@
       IMPLICIT REAL*8 (A-H,O-Z) 
 ! Input/output files
       COMMON / INOUT  / NINP,NOUT
+      COMMON / MOMSET / p1(4),q1(4),p2(4),q2(4),
+     &                  phot(100,4),nphot
+      COMMON / WGTALL / wtmod,wtcrud,wttrig,wtset(300)
       DIMENSION  xpar(100),npar(100)
+      CHARACTER*256 LHEline
+      CHARACTER*256 LHEFile
+      CHARACTER*256 ValueArg
+      CHARACTER*32 Option
+      INTEGER NArg,ArgStatus,ArgLength,SeedIn,IOStatus,IArg,PosArg
+      REAL*8 LHEwgt
       SAVE 
 !
       ninp = 5
+      NevTot = 100000
+      SeedIn = 54217137
+      LHEFile = 'demo.lhe'
+      NArg = COMMAND_ARGUMENT_COUNT()
+      IArg = 1
+      PosArg = 0
+      DO WHILE (IArg.LE.NArg)
+         CALL GET_COMMAND_ARGUMENT(IArg,ValueArg,ArgLength,ArgStatus)
+         IF (ArgStatus.NE.0 .OR. ArgLength.EQ.0) THEN
+            WRITE(6,*) 'Invalid command-line argument'
+            STOP 1
+         ENDIF
+         Option = ValueArg
+         IF (TRIM(Option).EQ.'--events' .OR.
+     &       TRIM(Option).EQ.'--seed' .OR.
+     &       TRIM(Option).EQ.'--lhe') THEN
+            IF (IArg.EQ.NArg) THEN
+               WRITE(6,*) 'Missing option value'
+               STOP 1
+            ENDIF
+            IArg = IArg+1
+            CALL GET_COMMAND_ARGUMENT(IArg,ValueArg,ArgLength,
+     &                                ArgStatus)
+            IF (ArgStatus.NE.0 .OR. ArgLength.EQ.0) THEN
+               WRITE(6,*) 'Invalid option value'
+               STOP 1
+            ENDIF
+            IF (TRIM(Option).EQ.'--events') THEN
+               READ(ValueArg,*,IOSTAT=ArgStatus) NevTot
+               IF (ArgStatus.NE.0 .OR. NevTot.LE.0) THEN
+                  WRITE(6,*) 'event_count must be positive'
+                  STOP 1
+               ENDIF
+            ELSEIF (TRIM(Option).EQ.'--seed') THEN
+               READ(ValueArg,*,IOSTAT=ArgStatus) SeedIn
+               IF (ArgStatus.NE.0 .OR. SeedIn.LT.0 .OR.
+     &             SeedIn.GT.900000000) THEN
+                  WRITE(6,*) 'seed must be 0 to 900000000'
+                  STOP 1
+               ENDIF
+            ELSE
+               LHEFile = ValueArg
+            ENDIF
+         ELSE
+            PosArg = PosArg+1
+            IF (PosArg.EQ.1) THEN
+               READ(ValueArg,*,IOSTAT=ArgStatus) NevTot
+               IF (ArgStatus.NE.0 .OR. NevTot.LE.0) THEN
+                  WRITE(6,*) 'event_count must be positive'
+                  STOP 1
+               ENDIF
+            ELSEIF (PosArg.EQ.2) THEN
+               READ(ValueArg,*,IOSTAT=ArgStatus) SeedIn
+               IF (ArgStatus.NE.0 .OR. SeedIn.LT.0 .OR.
+     &             SeedIn.GT.900000000) THEN
+                  WRITE(6,*) 'seed must be 0 to 900000000'
+                  STOP 1
+               ENDIF
+            ELSEIF (PosArg.EQ.3) THEN
+               LHEFile = ValueArg
+            ELSE
+               WRITE(6,*) 'Too many command-line arguments'
+               STOP 1
+            ENDIF
+         ENDIF
+         IArg = IArg+1
+      ENDDO
 ! General Output for everybody including glibk
       nout = 16
-      OPEN(nout,FILE='./demo.output')
+      OPEN(nout,STATUS='SCRATCH',FORM='FORMATTED')
       REWIND(nout)
       CALL goutpu(nout)
       WRITE(nout,*) '   '
@@ -41,15 +117,18 @@
       WRITE(nout,*) '==========*********************==============='
       WRITE(nout,*) '=============================================='
       WRITE(nout,*) '   '
+      WRITE(nout,*) 'Requested events = ',NevTot,
+     &              ' RANMAR seed = ',SeedIn
 !----------------------------------------------------------------------
 ! Input parameters for  BHWIDE
       CMSEne =  91.2    ! CMS Energy = 2*Ebeam [GeV]
-      ThMinp =  25.0    ! Detector range ThetaMin [deg] for positrons
-      ThMaxp = 155.0    ! Detector range ThetaMax [deg] for positrons
-      ThMine =  25.0    ! Detector range ThetaMin [deg] for electrons
-      ThMaxe = 155.0    ! Detector range ThetaMax [deg] for electrons
-      EnMinp =   1.0    ! Energy minimum [GeV] for detected positrons
-      EnMine =   1.0    ! Energy minimum [GeV] for detected electrons
+      Ebeam = CMSEne/2
+      ThMinp =  10.0    ! Detector range ThetaMin [deg] for positrons
+      ThMaxp = 170.0    ! Detector range ThetaMax [deg] for positrons
+      ThMine =  10.0    ! Detector range ThetaMin [deg] for electrons
+      ThMaxe = 170.0    ! Detector range ThetaMax [deg] for electrons
+      EnMinp =   0.2    ! Energy minimum [GeV] for detected positrons
+      EnMine =   0.2    ! Energy minimum [GeV] for detected electrons
       Acolli =  10.0    ! Maximum acollinearity [deg] of final e+e-
       epsCMS =  1d-5    ! Infrared cut on photon energy 
       WTMAX  =   3.0    ! Maximum Weight for rejection
@@ -76,6 +155,7 @@
 ! Filling BHWIDE parameter arrays
       npar( 1) = KeyOpt
       npar( 2) = KeyRad
+      CALL MARINI(SeedIn,0,0)
 !
       xpar( 1) = CMSEne
       xpar( 2) = ThMinp
@@ -99,7 +179,7 @@
       CALL Example(-1,xpar,npar)
 !---------------------------------------------------------------------- 
 ! Number of events to be generated
-      NevTot = 100000
+      OPEN(12,STATUS='SCRATCH',FORM='FORMATTED')
 !
       WRITE(6,*) '   '
       WRITE(6,*) '--------------  BHWdem ----------------------'
@@ -112,29 +192,72 @@
       DO Ievent = 1,NevTot
 !--- Generation of a single event
          CALL BHWIDE( 0,xpar,npar)
+         IF (KeyWgt .EQ. 0 .OR. wtcrud*wttrig .NE. 0d0) THEN
+           LHEwgt = 1d0
+           IF (KeyWgt .NE. 0) LHEwgt = wtmod
+           NUP = 4 + nphot
+           WRITE(12,'(A)') '<event>'
+           WRITE(12,2) NUP,1,LHEwgt,CMSEne,0d0,0d0
+           WRITE(12,3) -11,-1,0,0,0,0,
+     &         p1(1),p1(2),p1(3),p1(4),0.00051099895d0,0d0,9d0
+           WRITE(12,3)  11,-1,0,0,0,0,
+     &         q1(1),q1(2),q1(3),q1(4),0.00051099895d0,0d0,9d0
+           WRITE(12,3) -11, 1,1,2,0,0,
+     &         p2(1),p2(2),p2(3),p2(4),0.00051099895d0,0d0,9d0
+           WRITE(12,3)  11, 1,1,2,0,0,
+     &         q2(1),q2(2),q2(3),q2(4),0.00051099895d0,0d0,9d0
+           DO Iphot = 1,nphot
+             WRITE(12,3) 22,1,1,2,0,0,
+     &            phot(Iphot,1),phot(Iphot,2),phot(Iphot,3),
+     &            phot(Iphot,4),0d0,0d0,9d0
+           ENDDO
+           WRITE(12,'(A)') '</event>'
+        ENDIF
 ! Fill histograms
          CALL Example( 0,xpar,npar)
-! Print four-momenta of first events
-         IF (Ievent.LE.5) CALL dumps(nout)  
-         IF (Ievent.LE.5) CALL dumps( 6)  
          IF (MOD(Ievent,10000) .EQ. 0) THEN
             WRITE(nout,1)' Ievent = ',Ievent,'[',Ievent*100/NevTot,'%]'
             WRITE(6   ,1)' Ievent = ',Ievent,'[',Ievent*100/NevTot,'%]'
          ENDIF
       ENDDO
  1    FORMAT(A,I7,A4,I3,A2)
+ 2    FORMAT(I6,1X,I6,4(1X,ES20.12))
+ 3    FORMAT(6I6,7(1X,ES20.12))
+ 4    FORMAT(2I8,2(1X,ES20.12),4I5,2I6)
+ 5    FORMAT(3(1X,ES20.12),1X,I6)
 !----------------------------------------------------------------------
       WRITE(6,*)  ' =======> Generation finished!'
       WRITE(6,*) '   '
 !---------------------------------------------------------------------- 
 !--- Finalization stage
       CALL BHWIDE( 2,xpar,npar)
-! Save/Print histograms
-      CALL Example( 1,xpar,npar)
 !---------------------------------------------------------------------- 
 ! Print x-section
       Xsec = xpar(10)
       Erel = xpar(11)
+      IDWTUP = 3
+      IF (KeyWgt .NE. 0) IDWTUP = 4
+            OPEN(17,FILE=TRIM(LHEFile),STATUS='REPLACE',IOSTAT=IOStatus)
+            IF (IOStatus.NE.0) THEN
+                  WRITE(6,*) 'Could not open LHE file: ',TRIM(LHEFile)
+                  STOP 1
+            ENDIF
+      WRITE(17,'(A)') '<LesHouchesEvents version="1.0">'
+      WRITE(17,'(A)') '<header><generator name="BHWIDE" '
+     & // 'version="1.07"/></header>'
+      WRITE(17,'(A)') '<init>'
+      WRITE(17,4) -11,11,Ebeam,Ebeam,0,0,0,0,IDWTUP,1
+      WRITE(17,5) Xsec,Xsec*Erel,0d0,1
+      WRITE(17,'(A)') '</init>'
+      REWIND(12)
+ 6    READ(12,'(A)',IOSTAT=Iostat) LHEline
+      IF (Iostat .EQ. 0) THEN
+         WRITE(17,'(A)') TRIM(LHEline)
+         GOTO 6
+      ENDIF
+      WRITE(17,'(A)') '</LesHouchesEvents>'
+      CLOSE(12)
+      CLOSE(17)
       WRITE(nout,*)'|||||||||||||||||||||||||||||||||||||||||||||||||||'
       WRITE(nout,'(a,f15.8,a)')' Xsection_tot = ',Xsec    ,' [pb]'
      $                        ,' error        = ',Xsec*Erel,' [pb]'

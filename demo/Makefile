@@ -4,6 +4,9 @@ include ../Makefile.inc
 CFNAME = demo
 COMMAND = $(CFNAME).exe
 OBJECTS = $(CFNAME).o
+EVENTS ?= 100000
+SEED ?= 54217137
+LHE_FILE ?= demo.lhe
 #############################################################################
 DIRNBW = bhw
 DIRNEW = ewc
@@ -41,10 +44,7 @@ $(COMMAND): $(OBJECTS) \
 #                            Demo run
 #---------------------------------------------------------------------------
 demo:  $(COMMAND)
-	time ./$<
-	pdflatex $(CFNAME).tex
-	gv $(CFNAME).pdf
-	diff -s $(CFNAME).output $(CFNAME)_100k.output
+	time ./$< --events $(EVENTS) --seed $(SEED) --lhe "$(LHE_FILE)"
 #---------------------------------------------------------------------------
 #                   Cleaning
 #---------------------------------------------------------------------------
