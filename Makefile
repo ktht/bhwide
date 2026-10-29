@@ -26,11 +26,13 @@ PATHGL = ./glib
 PATHLE = ./lep-ws95
 PATHTE = ./tests
 #=============================================================================
-.PHONY: demo clean Clean CLEAN export tar-all count-bhw-lines count-all-lines 
+.PHONY: demo run clean Clean CLEAN export tar-all count-bhw-lines count-all-lines
 #=============================================================================
 # Run a simple demo program for BHWIDE
 demo:
 	(cd ./$(PATHDE); make demo)
+run:
+	(cd ./$(PATHDE); make run)
 #=============================================================================
 clean:
 	\rm -f *~

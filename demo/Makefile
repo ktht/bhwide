@@ -2,7 +2,7 @@
 include ../Makefile.inc
 #############################################################################
 CFNAME = demo
-COMMAND = $(CFNAME).exe
+COMMAND = ../bin/bhwide
 OBJECTS = $(CFNAME).o
 EVENTS ?= 100000
 SEED ?= 54217137
@@ -38,12 +38,14 @@ $(EXTER_LIB4): $(PATHEW)/*.f
 # Link procedure
 $(COMMAND): $(OBJECTS) \
 	$(EXTER_LIB1) $(EXTER_LIB2) $(EXTER_LIB3) $(EXTER_LIB4)
+	mkdir -p $(dir $@)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS) \
 	$(EXTER_LIB1) $(EXTER_LIB2) $(EXTER_LIB3) $(EXTER_LIB4)
 #---------------------------------------------------------------------------
 #                            Demo run
 #---------------------------------------------------------------------------
 demo:  $(COMMAND)
+run:  $(COMMAND)
 	./$< --events $(EVENTS) --seed $(SEED) --lhe "$(LHE_FILE)"
 #---------------------------------------------------------------------------
 #                   Cleaning
