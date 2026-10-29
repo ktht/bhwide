@@ -36,13 +36,13 @@ run:
 #=============================================================================
 clean:
 	\rm -f *~
-Clean:	clean
 	cd $(PATHDE); make clean
 	cd $(PATHBW); make clean
 	cd $(PATHEW); make clean
 	cd $(PATHIN); make clean
 	cd $(PATHEW); make clean
 	cd $(PATHGL); make clean
+Clean:	clean
 CLEAN:	Clean
 	cd $(PATHLE); make clean
 	cd $(PATHTE); make clean

@@ -1,6 +1,8 @@
 ####### Include common settings
 include ../Makefile.inc
 #############################################################################
+.PHONY: demo run
+
 CFNAME = demo
 COMMAND = ../bin/bhwide
 OBJECTS = $(CFNAME).o
@@ -51,7 +53,7 @@ run:  $(COMMAND)
 #                   Cleaning
 #---------------------------------------------------------------------------
 clean:
-	(rm -f  *.o  *.a  *~  *.exe  *.aux  *.dvi  *.log  core  *.gz lmap)
+	(rm -f  *.o  *.a  *~  *.exe  $(COMMAND)  *.aux  *.dvi  *.log  core  *.gz lmap)
 Clean:  clean
 	cd $(PATHBW); make clean
 	cd $(PATHEW); make clean
