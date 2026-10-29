@@ -121,7 +121,7 @@
      &              ' RANMAR seed = ',SeedIn
 !----------------------------------------------------------------------
 ! Input parameters for  BHWIDE
-      CMSEne =  91.2    ! CMS Energy = 2*Ebeam [GeV]
+      CMSEne =  91.0    ! CMS Energy = 2*Ebeam [GeV]
       Ebeam = CMSEne/2
       ThMinp =  10.0    ! Detector range ThetaMin [deg] for positrons
       ThMaxp = 170.0    ! Detector range ThetaMax [deg] for positrons
