@@ -287,7 +287,7 @@
             ENDIF
       WRITE(17,'(A)') '<LesHouchesEvents version="1.0">'
       WRITE(17,'(A)') '<header><generator name="BHWIDE" '
-     & // 'version="1.07"/></header>'
+     & // 'version="1.08"/></header>'
       WRITE(17,'(A)') '<init>'
       WRITE(17,4) -11,11,Ebeam,Ebeam,0,0,0,0,IDWTUP,1
       WRITE(17,5) Xsec,Xsec*Erel,0d0,1
