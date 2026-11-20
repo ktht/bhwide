@@ -1,0 +1,10 @@
+*.o
+*.a
+*.aux
+*.exe
+*.log
+*.pdf
+*.tex
+*.output
+*.lhe
+bin/

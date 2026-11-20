@@ -1,9 +1,12 @@
 ####### Include common settings
 include ../Makefile.inc
 #############################################################################
+.PHONY: demo run
+
 CFNAME = demo
-COMMAND = $(CFNAME).exe
+COMMAND = ../bin/bhwide
 OBJECTS = $(CFNAME).o
+CONFIG ?=
 #############################################################################
 DIRNBW = bhw
 DIRNEW = ewc
@@ -35,21 +38,20 @@ $(EXTER_LIB4): $(PATHEW)/*.f
 # Link procedure
 $(COMMAND): $(OBJECTS) \
 	$(EXTER_LIB1) $(EXTER_LIB2) $(EXTER_LIB3) $(EXTER_LIB4)
+	mkdir -p $(dir $@)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS) \
 	$(EXTER_LIB1) $(EXTER_LIB2) $(EXTER_LIB3) $(EXTER_LIB4)
 #---------------------------------------------------------------------------
 #                            Demo run
 #---------------------------------------------------------------------------
 demo:  $(COMMAND)
-	time ./$<
-	pdflatex $(CFNAME).tex
-	gv $(CFNAME).pdf
-	diff -s $(CFNAME).output $(CFNAME)_100k.output
+run:  $(COMMAND)
+	./$< $(if $(CONFIG),"$(CONFIG)")
 #---------------------------------------------------------------------------
 #                   Cleaning
 #---------------------------------------------------------------------------
 clean:
-	(rm -f  *.o  *.a  *~  *.exe  *.aux  *.dvi  *.log  core  *.gz lmap)
+	(rm -f  *.o  *.a  *~  *.exe  $(COMMAND)  *.aux  *.dvi  *.log  core  *.gz lmap)
 Clean:  clean
 	cd $(PATHBW); make clean
 	cd $(PATHEW); make clean

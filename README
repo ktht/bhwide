@@ -67,16 +67,36 @@ you should inspect Makefile.inc in the main directory to check whether
 the compiler name, flags, etc. are set according to your system configuration.
 If not, re-set them appropriately in this file.
 
-Now you can execute a demonstration program: 
-     > cd bhwide-1.08-export
-     > make demo 
-The program should run immediately and produce the output file: 
-   bhwide-1.08-export/demo/demo.output 
-and some plots (LaTeX format) in: 
-   bhwide-1.08-export/demo/demo.tex  
-If you have LaTeX (pdflatex) and a PDF viewer gv then the plots should
-pop-up on your screen!
-In this case you are executing the main program:
+Build the demonstration program:
+   > cd bhwide-1.08-export
+   > make demo
+
+To run BHWIDE with a configuration file, create a text file named run.conf
+in the repository root and pass its path as the only argument:
+   > ./bin/bhwide run.conf
+
+Relative paths, including the LHE output path, are resolved from the
+directory where you run the command, not from the config file's directory.
+Use one lowercase parameter and value per line, separated by whitespace.
+Blank lines and lines starting with # are ignored. Omitted parameters keep
+their defaults. A path in an lhe entry may contain spaces, without quotes.
+Example run.conf:
+   events 1000
+   seed   12345
+   lhe    sample.lhe
+   cmsene 91.0
+
+To use all defaults, run ./bin/bhwide with no arguments. It generates
+100000 events in demo.lhe in the current directory, with RANMAR seed 12345.
+
+Supported parameters:
+   events seed lhe
+   cmsene thminp thmaxp thmine thmaxe enminp enmine acolli epscms wtmax
+   amaz gammz sinw2 amtop amhig
+   keywgt keyrnd keycha keyzof keyewc keylib keymod keypia
+
+The parameters are case sensitive -- stick to lowercase.
+The demo's default settings and their meanings are in:
    bhwide-1.08-export/demo/demo.f
 See routine BHWdem there. It is an instructive example on how to
 set up input parameters and run BHWIDE with variable/constant weights. 
