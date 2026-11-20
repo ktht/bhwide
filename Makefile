@@ -14,7 +14,7 @@ include ./Makefile.inc
 ###############################################################################
 #=============================================================================
 #  Name and version of MC program -> main directory name
-MCNAME = bhwide-1.07
+MCNAME = bhwide-1.08
 #=============================================================================
 COMMAND = demo.exe
 #  Paths  to all subdirectories

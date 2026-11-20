@@ -14,10 +14,10 @@
 !                                                                      !
 !======================================================================!
 !    Written by: Wieslaw Placzek                  Knoxville, May 1995  ! 
-!    Last update: 07.01.2026       by: W.P.                            !
+!    Last update: 12.11.2026       by: W.P.                            !
 !----------------------------------------------------------------------!  
       IMPLICIT REAL*8(A-H,O-Z)
-      PARAMETER( pi = 3.1415926535897932d0, alfinv=137.035999084D0)
+      PARAMETER( pi = 3.1415926535897932d0, alfinv=137.035999177D0)
       PARAMETER( alfpi=  1/pi/alfinv, alfa= 1d0/alfinv)
       PARAMETER( GNANOB = 0.3893793721D6 ) ! GeV^2 * nbarn
       COMMON / BHPAR1 / DEL,EPSCM,THMIN,XMIVIS
