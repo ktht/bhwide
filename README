@@ -1,6 +1,6 @@
 ==============================================================================
 ------------------------------------------------------------------------------
-                        README of BHWIDE version 1.07
+                        README of BHWIDE version 1.08
 ------------------------------------------------------------------------------
 ==============================================================================
 
@@ -17,7 +17,7 @@ Documentation:
 
 There is still no COMPLETE UP-TO-DATE documentation, sorry!
 See comments in the source code, for example in: 
-   bhwide-1.07-export/bhw/bhwide.f, bhwid1.f, model1.f, model2.f
+   bhwide-1.08-export/bhw/bhwide.f, bhwid1.f, model1.f, model2.f
 
 Long write-up:
 ++++++++++++++ 
@@ -62,33 +62,33 @@ How to START your work with BHWIDE:
 -----------------------------------
 
 After unpacking the distribution directory with
-     > tar xvzf bhwide-1.07-export.tar.gz
+     > tar xvzf bhwide-1.08-export.tar.gz
 you should inspect Makefile.inc in the main directory to check whether
 the compiler name, flags, etc. are set according to your system configuration.
 If not, re-set them appropriately in this file.
 
 Now you can execute a demonstration program: 
-     > cd bhwide-1.07-export
+     > cd bhwide-1.08-export
      > make demo 
 The program should run immediately and produce the output file: 
-   bhwide-1.07-export/demo/demo.output 
+   bhwide-1.08-export/demo/demo.output 
 and some plots (LaTeX format) in: 
-   bhwide-1.07-export/demo/demo.tex  
+   bhwide-1.08-export/demo/demo.tex  
 If you have LaTeX (pdflatex) and a PDF viewer gv then the plots should
 pop-up on your screen!
 In this case you are executing the main program:
-   bhwide-1.07-export/demo/demo.f
+   bhwide-1.08-export/demo/demo.f
 See routine BHWdem there. It is an instructive example on how to
 set up input parameters and run BHWIDE with variable/constant weights. 
 Then you can compare your results with the pre-prepared output from
 the run on Linux Ubuntu-24.04 with the gfortran compiler:
 GNU Fortran (GCC) 13.2.0 (Ubuntu 13.2.0-23ubuntu4)
 located in the files:
-   bhwide-1.07-export/demo/demo_100k.output   <-- text-file output
-   bhwide-1.07-export/demo/demo_100k.pdf      <-- plots in PDF format
+   bhwide-1.08-export/demo/demo_100k.output   <-- text-file output
+   bhwide-1.08-export/demo/demo_100k.pdf      <-- plots in PDF format
 
 ------------------------------------
-Main features of BHWIDE version 1.07
+Main features of BHWIDE version 1.08
 ------------------------------------
 
 * Multiple photons with FINITE transverse momenta generated according to the 
@@ -109,12 +109,12 @@ Main features of BHWIDE version 1.07
 Topography of BHWIDE:
 ---------------------
 
-bhlwide-1.07-export/demo/       Working directory with demo
-bhlwide-1.07-export/bhw/        Monte Carlo event generator
-bhlwide-1.07-export/lib/        Tools for Monte Carlo and for histogramming
-bhlwide-1.07-export/interface/  Interfaces to ElectroWeak Libraries   
-bhlwide-1.07-export/ewc/        Directory with ElectroWeak Libraries          
-bhlwide-1.07-export/dok/        Documentation in PostScript
+bhlwide-1.08-export/demo/       Working directory with demo
+bhlwide-1.08-export/bhw/        Monte Carlo event generator
+bhlwide-1.08-export/lib/        Tools for Monte Carlo and for histogramming
+bhlwide-1.08-export/interface/  Interfaces to ElectroWeak Libraries   
+bhlwide-1.08-export/ewc/        Directory with ElectroWeak Libraries          
+bhlwide-1.08-export/dok/        Documentation in PostScript
 
 -----------------------
 Input/Output of BHWIDE:
@@ -174,6 +174,7 @@ Input/Output of BHWIDE:
 !                   =2 ON, S. Eidelman, F. Jegerlehner, Z.Phys.C(1995) !
 !                   =3 ON, Burkhardt and Pietrzyk 1995 (Moriond).      !
 !                   =4 ON, F. Jegerlehner, 21 October 2025.            !
+!                   =5 ON, F. Jegerlehner, 24 July 2026.               !
 !                   NOTE: Now it works for both ALIBABA and BABAMC     !
 !                         rutines as well as for KeyEWC=0!             !
 !  XPAR( 1) =CMSENE Total center mass energy [GeV]                     !

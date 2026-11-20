@@ -79,10 +79,10 @@
 !       helicity aplitudes as Dyson-type factors.                      ! 
 !----------------------------------------------------------------------!
 ! Written by: Wieslaw Placzek                 Knoxville, May 1995      !
-! Last update: 04.12.2024      by: W. P.                               !
+! Last update: 12.11.2026      by: W. P.                               !
 !----------------------------------------------------------------------!
       IMPLICIT REAL*8 (a-h,o-z)
-      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999084D0)
+      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999177D0)
       PARAMETER( ALFPI=  1D0/PI/ALFINV ,ALFA=1D0/ALFINV)
       COMMON / BHPAR3 / KEYRAD,KEYOPT
       COMMON / BHPARZ / AMAZ,GAMMZ,SINW2,GV,GA
@@ -381,10 +381,10 @@ cc        print*,' t, gt = ',t, gt
 !       matrix element as Dyson-type factors.                          !
 !----------------------------------------------------------------------!
 ! Written by: Wieslaw Placzek                 Knoxville, May 1995      !
-! Last update: 04.14.2024      by: W. P.                               !
+! Last update: 12.11.2026      by: W. P.                               !
 !----------------------------------------------------------------------!
       IMPLICIT REAL*8 (a-h,o-z)
-      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999084D0)
+      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999177D0)
       PARAMETER( ALFA=1D0/ALFINV)
       COMMON / BHPAR2 / CMSENE,AMEL
       SAVE   / BHPAR2 /
@@ -428,10 +428,10 @@ cc        print*,' t, gt = ',t, gt
 !       matrix element as Dyson-type factors.                          ! 
 !----------------------------------------------------------------------!
 ! Written by: Wieslaw Placzek                 Knoxville, May 1995      !
-! Last update: 04.12.2024      by: W. P.                               !
+! Last update: 12.11.2026      by: W. P.                               !
 !----------------------------------------------------------------------!
       IMPLICIT REAL*8 (a-h,o-z)
-      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999084D0)
+      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999177D0)
       PARAMETER( ALFA=1D0/ALFINV)
       COMMON / BHPAR3 / KEYRAD,KEYOPT
       COMMON / BHPARZ / AMAZ,GAMMZ,SINW2,GV,GA
@@ -519,10 +519,10 @@ cc        print*,' t, gt = ',t, gt
 !       matrix element as Dyson-type factors.                          !
 !----------------------------------------------------------------------!
 ! Written by: Wieslaw Placzek                 Knoxville, May 1995      !
-! Last update: 04.12.2024      by: W. P.                               !
+! Last update: 12.11.2026      by: W. P.                               !
 !----------------------------------------------------------------------!
       IMPLICIT REAL*8 (a-h,o-z)
-      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999084D0)
+      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999177D0)
       PARAMETER(ALFA=1D0/ALFINV)
       COMMON / BHPAR3 / KEYRAD,KEYOPT
       COMMON / BHPARZ / AMAZ,GAMMZ,SINW2,GV,GA

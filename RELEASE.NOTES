@@ -1,7 +1,15 @@
                 ================================
-                = RELEASE NOTES OF BHWIDE 1.07 =
+                = RELEASE NOTES OF BHWIDE 1.08 =
                 ================================
 		
+--------------------------
+What's NEW in VERSION 1.08
+--------------------------
+
+* A new version of hadronic vacuuum polarization added - option: KeyPol = 5.
+  Routines of F. Jegerlehner, 24.07.2026; see bhw/repi.f: chadr5x26().
+* SM parameters (masses, widths, constants) updated according to PDG 2026.
+
 --------------------------
 What's NEW in VERSION 1.07
 --------------------------

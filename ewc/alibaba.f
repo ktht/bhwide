@@ -1,6 +1,6 @@
 !---------------------------------------------------------------!
 !     This is the original ALIBABA program with a few minor     !
-!     modifications by W. Placzek (last update: 07.01.2026).    !
+!     modifications by W. Placzek (last update: 12.11.2026).    !
 !---------------------------------------------------------------!
       SUBROUTINE BHABHA(S,THETA1,THETA2,THETA3,THETA4,
      +                    BIGEP0,BIGEM0,ACOL,RESULT,ERROR)
@@ -634,12 +634,12 @@
 * From here on: NOT user settable
 *
 !WP   ALFAS  = .12D0
-      ALFAS = 0.118d0 ! PDG 2025 (WP, 07.01.2026)
+      ALFAS = 0.118d0 ! PDG 2026 (WP, 12.11.2026)
 * ALFA and HBARC2 from Particle Data Group Publ. 1990.
 !WP      ALFA   = 1D0 / 137.0359895D0
 !WP      HBARC2 = 3.8937966D8
-      ALFA   = 1D0 / 137.035999084D0  ! PDG 2025 (WP, 07.01.2026)
-      HBARC2 = 3.893793721D8          ! PDG 2025 (WP, 07.01.2026)
+      ALFA   = 1D0 / 137.035999177D0  ! PDG 2026 (WP, 12.11.2026)
+      HBARC2 = 3.893793721D8          ! PDG 2026 (WP, 12.11.2026)
       PI = 4D0*DATAN(1D0)
       EE = SQRT( 4D0*PI*ALFA )
 * QCD and QED correction factors
@@ -650,7 +650,8 @@
       END IF
       FACQED = 3D0*ALFA/4D0/PI
 * Starting value for sin**2(theta-w)
-      SIN2TH = .2310D0
+!WP      SIN2TH = .2310D0
+      SIN2TH = .231220D0  ! PDG 2026 (WP, 12.11.2026)
       RMW = RMZ*DSQRT( 1D0 - SIN2TH )
 * Iterate to find the value for sin**2(theta-w) and Mw
 * After this all couplings and renormalization constants are defined.
@@ -2800,16 +2801,16 @@
 !WP      RMASS(7) = .15D0
 !WP      RMASS(8) = RMT
 !WP      RMASS(9) = 4.5D0
-!WP: Charged lepton masses from Particle Data Group Publ. 2025 (07.01.2026)
-      RMASS(1) = 0.51099895d-3
+!WP: Charged lepton masses from Particle Data Group Publ. 2026 (12.11.2026)
+      RMASS(1) = 0.51099895069d-3
       RMASS(2) = 0.1056583755d0
       RMASS(3) = 1.77693d0
       RMASS(4) = 0.00216d0
       RMASS(5) = 0.0047d0
-      RMASS(6) = 1.273d0
-      RMASS(7) = 0.0935d0
+      RMASS(6) = 1.2729d0
+      RMASS(7) = 0.0929d0
       RMASS(8) = RMT
-      RMASS(9) = 4.183d0
+      RMASS(9) = 4.1859d0
       SW    = DSQRT( SIN2TH )
       CW    = DSQRT( 1D0 - SIN2TH )
       DO 10 I = 0 , NRMASS

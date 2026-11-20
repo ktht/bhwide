@@ -13,7 +13,7 @@
 !======================================================================!
 !=======================     AUTHORS      =============================!
 !============   S. Jadach, W. Placzek and B.F.L. Ward  ================!
-!===================  VERSION 1.07 January 2026  ======================!
+!===================  VERSION 1.08 November 2026  =====================!
 !======================================================================!
 !                                                                      !
 ! Main subprogram in MC multiphoton generator for Bhabha scattering.   !
@@ -89,6 +89,7 @@
 !                   =2 ON, S. Eidelman, F. Jegerlehner, Z.Phys.C(1995) !
 !                   =3 ON, Burkhardt and Pietrzyk 1995 (Moriond).      !
 !                   =4 ON, F. Jegerlehner, 21 October 2025.            !
+!                   =5 ON, F. Jegerlehner, 24 July 2026.            !
 !                   NOTE: Now it works for both ALIBABA and BABAMC     !
 !                         rutines as well as for KeyEWC=0!             !
 !  XPAR( 1) =CMSENE Total center mass energy [GeV]                     !
@@ -215,10 +216,10 @@
 ! ENDIF                                                                !
 ! ====                                                                 !
 !----------------------------------------------------------------------!
-! Last update: 07.01.2026                   by: W. Placzek, Krakow     !
+! Last update: 13.11.2026                   by: W. Placzek, Krakow     !
 !======================================================================!
       IMPLICIT REAL*8(A-H,O-Z)   
-      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999084D0)
+      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999177D0)
       PARAMETER( ALFPI=  1D0/PI/ALFINV ,ALFA=1D0/ALFINV)
       PARAMETER( GNANOB = 0.3893793721D6 ) ! GeV^2 * nbarn
       CHARACTER*80   BXOPE,BXCLO,BXTXT,BXL1I,BXL1F,BXL2F,BXL1G,BXL2G 
@@ -504,11 +505,11 @@
 ! In this routine input parameters are set up and stored in            !
 ! appriopriate COMMON blocks.                                          !
 !----------------------------------------------------------------------!
-! Last update: 04.12.2024                   by: W. Placzek             !
+! Last update: 12.11.2026                   by: W. Placzek             !
 !----------------------------------------------------------------------!
       IMPLICIT REAL*8 (A-H,O-Z)   
       DIMENSION  XPAR(*), NPAR(*) 
-      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999084D0)
+      PARAMETER( PI = 3.1415926535897932D0, ALFINV = 137.035999177D0)
       CHARACTER*80   BXOPE,BXCLO,BXTXT,BXL1I,BXL1F,BXL2F,BXL1G,BXL2G 
       PARAMETER(
      $BXOPE =  '(//1X,15(5H=====)    )',
@@ -624,7 +625,7 @@ C      SAVE   / BHPAR1 /, / BHPAR2 /, / BHPAR3 /, / BHPAR4 /, / BHPARZ /
       ENDIF
 !--------------------------------------------------
 ! Electron mass and s-variable
-      AMEL = 0.51099895D-3
+      AMEL = 0.51099895069D-3
       SVAR = CMSENE**2
 ! Angles in radians
       DEGRAD = PI/180D0
@@ -781,7 +782,7 @@ cc      trmid = SVAR*       (1 -beteli*betelf*COS(thmid))/2 -2*AMEL**2
 *     *********************
 ! Differential Born cross section dsigma/dt in pb.
       IMPLICIT REAL*8 (a-h,o-z)
-      PARAMETER( pi = 3.1415926535897932d0, alfinv=137.035999084D0)
+      PARAMETER( pi = 3.1415926535897932d0, alfinv=137.035999177D0)
       PARAMETER( alfpi=  1/pi/alfinv, alfa= 1d0/alfinv)
       PARAMETER( Gnanob = 0.3893793721D6 ) ! GeV^2 * nbarn
       COMMON / BHPAR2 / CMSENE,AMEL  
@@ -927,7 +928,7 @@ c        WCTR1      Control weight for delta-->epsilon rejection
 c        WCTR2      control weight for photons below EMIN removal
 *     ************************
       IMPLICIT REAL*8(A-H,O-Z)  
-      PARAMETER(PI=3.1415926535897932D0,ALFINV=137.035999084D0)
+      PARAMETER(PI=3.1415926535897932D0,ALFINV=137.035999177D0)
       PARAMETER(ALF1=1/ALFINV/PI )
       DIMENSION P1(4),P2(4),WMAT(50),PHOT(100,4),PHSU(4)
       DATA ICONT /0/
@@ -974,10 +975,10 @@ C In the case of removal the new mass weight is this
 !                 of the beam energy                                !
 !-------------------------------------------------------------------!
 ! Written by: Wieslaw Placzek                Knoxville, Oct. 1995   !
-! Last update: 04.12.2024           by: W.P.                        !
+! Last update: 12.11.2026           by: W.P.                        !
 !-------------------------------------------------------------------!     
       IMPLICIT REAL*8(A-H,O-Z)
-      PARAMETER ( pi = 3.1415926535897932D0, alfinv = 137.035999084D0)
+      PARAMETER ( pi = 3.1415926535897932D0, alfinv = 137.035999177D0)
       PARAMETER ( alfpi = 1/alfinv/pi )
       COMMON / BHPAR2 / CMSEne,amel  
       COMMON / MOMSET / p1(4),q1(4),p2(4),q2(4),phot(100,4),nphot
@@ -1013,10 +1014,10 @@ C In the case of removal the new mass weight is this
 !       algorithm and it provides a major part of the result.       !
 !-------------------------------------------------------------------!
 ! Written by: Wieslaw Placzek                Knoxville, Oct. 1995   !
-! Last update: 04.12.2024           by: W.P.                        !
+! Last update: 12.11.2026           by: W.P.                        !
 !-------------------------------------------------------------------!     
       IMPLICIT REAL*8(A-H,O-Z)
-      PARAMETER ( pi = 3.1415926535897932D0, alfinv = 137.035999084D0)
+      PARAMETER ( pi = 3.1415926535897932D0, alfinv = 137.0359990177D0)
       PARAMETER ( alfpi = 1/alfinv/pi )
       COMMON / BHPAR2 / CMSEne,amel  
       COMMON / MOMSET / p1(4),q1(4),p2(4),q2(4),phot(100,4),nphot
@@ -1046,10 +1047,10 @@ C In the case of removal the new mass weight is this
 !        amel        - electron mass [in GeV]                       !  
 !-------------------------------------------------------------------!
 ! Written by: Wieslaw Placzek                Knoxville, Oct. 1995   !
-! Last update: 04.12.2024           by: W.P.                        !
+! Last update: 12.11.2026           by: W.P.                        !
 !-------------------------------------------------------------------!     
       IMPLICIT REAL*8(A-H,O-Z)
-      PARAMETER ( pi = 3.1415926535897932D0, alfinv = 137.035999084D0)
+      PARAMETER ( pi = 3.1415926535897932D0, alfinv = 137.035999177D0)
       PARAMETER ( alfpi = 1/alfinv/pi )
       REAL*8 p1(4),q1(4),p2(4),q2(4)
 !
@@ -1077,10 +1078,10 @@ C In the case of removal the new mass weight is this
 !        amel  - electron mass [in GeV]                             ! 
 !-------------------------------------------------------------------!
 ! Written by: Wieslaw Placzek                Knoxville, Oct. 1995   !
-! Last update: 04.12.2024           by: W.P.                        !
+! Last update: 12.11.2026           by: W.P.                        !
 !-------------------------------------------------------------------!     
       IMPLICIT REAL*8(A-H,O-Z)
-      PARAMETER ( pi = 3.1415926535897932D0, alfinv = 137.035999084D0)
+      PARAMETER ( pi = 3.1415926535897932D0, alfinv = 137.035999177D0)
       PARAMETER ( alfpi = 1/alfinv/pi )
       REAL*8 p1(4),p2(4)
 !
@@ -1112,7 +1113,7 @@ C This is for crude distribition before mass weights
 C The triangle effect included (pi**2/6)
 C     ***********************************
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-      PARAMETER(PI=3.1415926535897932D0,ALFINV=137.035999084D0)
+      PARAMETER(PI=3.1415926535897932D0,ALFINV=137.035999177D0)
       PARAMETER(ALF1=1/ALFINV/PI )
       DIMENSION Q1(4),Q2(4)       
 C ...Momenta q1,q2 should be in CMS
@@ -1166,7 +1167,7 @@ C         WT1     = TRANP/TRAN is Jacobian, =0 outside ph.sp.
 C         WTM     = list of mass weights
 *     ************************
       IMPLICIT REAL*8(A-H,O-Z)
-      PARAMETER (PI=3.1415926535897932D0, ALFINV=137.035999084D0)
+      PARAMETER (PI=3.1415926535897932D0, ALFINV=137.035999177D0)
       PARAMETER (NMAX=20)
       DIMENSION PHOT(100,4),PHSU(4),PH(4)
       DIMENSION MK(50),WTM(50)   

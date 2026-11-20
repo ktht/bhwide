@@ -53,11 +53,11 @@
       Acolli =  10.0    ! Maximum acollinearity [deg] of final e+e-
       epsCMS =  1d-5    ! Infrared cut on photon energy 
       WTMAX  =   3.0    ! Maximum Weight for rejection
-      AMAZ   =  91.188  ! Z mass
+      AMAZ   =  91.1879 ! Z mass
       GAMMZ  =  2.4955  ! Z width (may be recalculated by EW library)
       SINW2  =  0.23122 ! sin^2(theta_W) (may be recalculated by EW library)   
-      AMTOP  = 172.56   ! top quark mass
-      AMHIG  = 125.20   ! Higgs mass      
+      AMTOP  = 172.60   ! top quark mass
+      AMHIG  = 125.13   ! Higgs mass      
 ! Try both options for KeyWgt, result should be the same
       KeyWgt =   0   ! unweighted (WT=1) events, for detector simulation
 !#      KeyWgt =   1   ! weighted events
@@ -71,7 +71,7 @@
       KeyLib =   2   ! ElectroWeak corrections from ALIBABA
       KeyMod =   1   ! Hard bremsstr. matrix element from MODEL1
 !#      KeyMod =   2   ! Hard bremsstr. matrix alement from MODEL2
-      KeyPia =   4   ! Vacuum polarization option (0/1/2/3/4)
+      KeyPia =   5   ! Vacuum polarization option (0/1/2/3/4/5)
       KeyRad = 1000*KeyEWC + 100*KeyLib + 10*KeyMod + KeyPia
 ! Filling BHWIDE parameter arrays
       npar( 1) = KeyOpt
